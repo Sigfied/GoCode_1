@@ -1,6 +1,7 @@
 package com.example.demo.service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.entity.Students;
 import com.example.demo.entity.course;
 import com.example.demo.mapper.CourseMapper;
 import com.example.demo.mapper.StudentsMapper;
@@ -47,4 +48,44 @@ public class CourseServiceImpl implements CourseService {
         courseNew.setCendtime(end);
         return courseMapper.insert(courseNew);
     }
+
+    @Override
+    public List<course> showPublicCourseList(String account) {
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account",account);
+        List<course> courses = new ArrayList<>();
+        for( Students students: studentsMapper.selectList(queryWrapper)){
+            QueryWrapper<course> queryWrapperc = new QueryWrapper<>();
+            queryWrapperc.eq("cid",students.getCid());
+            courses.addAll(courseMapper.selectList(queryWrapperc));
+        }
+        return courses;
+    }
+
+    /**
+     * 添加学生
+     * @param account 用户账号
+     * @param cid     课程id
+     * @param type    用户类型（区别于老师与学生）
+     * @return 返
+     * @date 6.22 14:30
+     */
+    @Override
+    public int insertStudent(String account, String cid, int type) {
+       Students student = new Students();
+       student.setCid(cid);
+       student.setAccount(account);
+       student.setStype(type);
+       return studentsMapper.insert(student);
+    }
+
+    @Override
+    public course searchCourseWithCid(String cid) {
+        QueryWrapper<course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cid",cid);
+        return courseMapper.selectOne(queryWrapper);
+    }
+
+
+
 }

@@ -24,4 +24,24 @@ public interface CourseService {
      * @return 创建一个Course
      * */
     int createCourse(String cid, String cname, String introduce, String creator, String startTime,String endTime);
+
+    /**展示用户所选课,注意：未测试
+     * @param account 用户信息{account:""}
+     * @return 返回List<course>
+     * @date 6.22 14:30
+     *
+     * */
+     List<course> showPublicCourseList(String account) ;
+
+    /**添加学生
+     * @param account 用户账号
+     * @param cid 课程id
+     * @param type 用户类型（区别于老师与学生）
+     * @return 返
+     * @date 6.22 14:30
+     * */
+     int insertStudent(String account,String cid,int type);
+
+    course searchCourseWithCid(String cid);
+
 }

@@ -1,11 +1,14 @@
 package com.example.demo.service.serviceImpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.Favorites;
 import com.example.demo.mapper.FavoritesMapper;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.tools.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author GYJ
@@ -34,5 +37,18 @@ public class FavoritesServiceImpl implements FavoritesService {
         favorites.setFid(favoritesId);
         favorites.setFname(favoritesName);
         return favoritesMapper.insert(favorites);
+    }
+
+    /**
+     * 返回该用户所有的收藏夹列表
+     *
+     * @param account 用户账户
+     * @return 返回该用户所有的收藏夹列表
+     */
+    @Override
+    public List<Favorites> queryFavorites(String account) {
+        QueryWrapper<Favorites> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account",account);
+        return favoritesMapper.selectList(queryWrapper);
     }
 }

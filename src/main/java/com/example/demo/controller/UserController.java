@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -27,31 +28,30 @@ public class UserController {
         this.userMapper = userMapper;
         this.userService = userService;
     }
-
-    @RequestMapping("/loginReturnUser")
-    @GetMapping
-    @ResponseBody
-    public User loginReturnUser(){
-      return userService.getUserByAccount("20201307");
-    }
-
-    @RequestMapping(value = "/loginTest" ,produces = "application/json")
+    /**根据用户账号返回一个User对象,注意：未测试
+     * @param map 用户信息
+     * @return 返回一个User对象
+     * @date 6.22 11:30
+     *
+     * */
+    @RequestMapping(value="/loginReturnUser" ,produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public User loginTest(@RequestBody Map<String, Map<String, Object>> map){
-        String account = map.get("account").get("account").toString();
-        String password = map.get("password").get("password").toString();
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account",account).eq("password",password);
-        return userMapper.selectOne(queryWrapper);
+    public User loginReturnUser(@RequestBody Map<String, Map<String, Object>> map){
+        return userService.loginReturnUser(map);
     }
 
-    @RequestMapping("/UpdateUserTest")
+    /**根据用户提交信息修改个人信息,注意：未测试
+     * @param map 用户信息
+     * @return 返回int若为1，则成功，否则失败
+     * @date 6.22 11:30
+     *
+     * */
+    @RequestMapping("/UpdateUser")
     @ResponseBody
-    public int insertUserTest(){
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("account","20201312");
-        return userMapper.update(new User(),updateWrapper);
+    @CrossOrigin(origins = {"*"})
+    public int UpdateUser(@RequestBody Map<String, Map<String, Object>> map){
+        return userService.UpdateUser(map);
     }
 
 }

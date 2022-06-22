@@ -1,16 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 /**
  * @author GYJ
  */
 public interface UserService  {
 
-    /**根据用户账号返回一个User对象
-     * @param account 用户账号
-     * @return 返回一个User对象
-     * @date 6.22 11:28
-    * */
-    User getUserByAccount(String account);
+    User loginReturnUser(@RequestBody Map<String, Map<String, Object>> map);
+
+    int UpdateUser(@RequestBody Map<String, Map<String, Object>> map);
+
 }
