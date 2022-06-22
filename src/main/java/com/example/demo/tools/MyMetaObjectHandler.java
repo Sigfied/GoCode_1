@@ -16,6 +16,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         public void insertFill(MetaObject metaObject) {
             log.info("start insert fill ....");
             this.strictInsertFill(metaObject, "create_time", LocalDateTime.class, LocalDateTime.now());
+            this.strictInsertFill(metaObject, "update_time", LocalDateTime.class, LocalDateTime.now());
         }
 
         @Override

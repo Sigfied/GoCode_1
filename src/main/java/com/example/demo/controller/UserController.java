@@ -7,10 +7,7 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,6 +29,7 @@ public class UserController {
     }
 
     @RequestMapping("/loginReturnUser")
+    @GetMapping
     @ResponseBody
     public User loginReturnUser(){
       return userService.getUserByAccount("20201307");

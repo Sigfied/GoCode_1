@@ -10,6 +10,7 @@ public interface UserService  {
     /**根据用户账号返回一个User对象
      * @param account 用户账号
      * @return 返回一个User对象
+     * @date 6.22 11:28
     * */
     User getUserByAccount(String account);
 }

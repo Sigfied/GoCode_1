@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author GYJ
@@ -20,9 +19,9 @@ public class course {
     /**课程id*/
     private String cid;
     /**课程开始时间*/
-    private Date cstarttime;
+    private LocalDateTime cstarttime;
     /**课程结束时间*/
-    private Date cendtime;
+    private LocalDateTime cendtime;
     /**课程名*/
     private String cname;
     /**课程介绍*/
