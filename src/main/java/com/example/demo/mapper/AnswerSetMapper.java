@@ -1,14 +1,13 @@
 package com.example.demo.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.demo.entity.Students;
+import com.example.demo.entity.Answerset;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author GYj
+ * @author lenovo
  */
 @Mapper
-public interface StudentsMapper extends BaseMapper<Students> {
+public interface AnswerSetMapper extends BaseMapper<Answerset> {
 
 }

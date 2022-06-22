@@ -7,28 +7,21 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author GYJ
  */
-@TableName("Course")
 @Data
-public class course {
+@TableName("favorites")
+public class Favorites {
     @TableId(value = "id")
     private Long id;
-    /**课程id*/
-    private String cid;
-    /**课程开始时间*/
-    private Date cstarttime;
-    /**课程结束时间*/
-    private Date cendtime;
-    /**课程名*/
-    private String cname;
-    /**课程介绍*/
-    private String cintroduce;
-    /**课程创建者*/
-    private String ccreator;
+    /**收藏夹ID*/
+    private String fid;
+    /**收藏夹名称*/
+    private String fname;
+    /**用户账号*/
+    private String account;
 
     @TableField(value = "create_time" ,fill = FieldFill.INSERT)
     private LocalDateTime create_time;

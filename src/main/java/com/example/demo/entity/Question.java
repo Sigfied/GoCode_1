@@ -1,8 +1,12 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @author GYj
@@ -10,8 +14,10 @@ import lombok.Data;
 @Data
 @TableName("question")
 public class Question {
+    @TableId(value = "id")
+    private Long id;
+
     /**题目Id*/
-    @TableId
     private String qid;
     /**所在题目集Id*/
     private String tid;
@@ -25,4 +31,10 @@ public class Question {
     private String qinput;
     /**题目输出样例，或者答案啊*/
     private String qoutput;
+
+    @TableField(value = "create_time" ,fill = FieldFill.INSERT)
+    private LocalDateTime create_time;
+
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime update_time;
 }
