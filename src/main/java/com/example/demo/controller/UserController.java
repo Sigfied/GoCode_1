@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,19 +23,18 @@ public class UserController {
 
     private final UserMapper userMapper;
 
+    private final UserService userService;
+
     @Autowired
-    public UserController(UserMapper userMapper) {
+    public UserController(UserMapper userMapper, UserService userService) {
         this.userMapper = userMapper;
+        this.userService = userService;
     }
 
     @RequestMapping("/loginReturnUser")
     @ResponseBody
     public User loginReturnUser(){
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account","20201307");
-        User user = userMapper.selectOne(queryWrapper);
-        System.out.println(user);
-        return user;
+      return userService.getUserByAccount("20201307");
     }
 
     @RequestMapping(value = "/loginTest" ,produces = "application/json")
@@ -48,7 +48,7 @@ public class UserController {
         return userMapper.selectOne(queryWrapper);
     }
 
-    @RequestMapping("/InsertUserTest")
+    @RequestMapping("/UpdateUserTest")
     @ResponseBody
     public int insertUserTest(){
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();

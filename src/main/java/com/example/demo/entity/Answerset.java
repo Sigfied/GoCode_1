@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author GYJ
+ */
 @Data
 @TableName("answerset")
 public class Answerset {
