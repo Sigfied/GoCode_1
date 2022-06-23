@@ -12,6 +12,7 @@ public interface UserService  {
 
     User loginReturnUser(@RequestBody Map<String, Map<String, Object>> map);
 
-    int UpdateUser(@RequestBody Map<String, Map<String, Object>> map);
+    //我怀疑这个地方有问题
+    int updateUser(@RequestBody Map<String, Map<String, Object>> map);
 
 }

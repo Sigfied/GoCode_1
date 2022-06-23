@@ -8,7 +8,7 @@ import java.util.List;
  * @author GYJ
  */
 public interface CourseService {
-    /**查看个人的所有课程
+    /**查看个人的所有课程???????????????????????????
      * @return 返回个人所有课程的列表
      * */
     List<course> getAllCourses();
@@ -33,15 +33,10 @@ public interface CourseService {
      * */
      List<course> showPublicCourseList(String account) ;
 
-    /**添加学生
-     * @param account 用户账号
-     * @param cid 课程id
-     * @param type 用户类型（区别于老师与学生）
-     * @return 返
-     * @date 6.22 14:30
-     * */
-     int insertStudent(String account,String cid,int type);
+
 
     course searchCourseWithCid(String cid);
+
+
 
 }

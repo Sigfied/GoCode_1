@@ -62,22 +62,7 @@ public class CourseServiceImpl implements CourseService {
         return courses;
     }
 
-    /**
-     * 添加学生
-     * @param account 用户账号
-     * @param cid     课程id
-     * @param type    用户类型（区别于老师与学生）
-     * @return 返
-     * @date 6.22 14:30
-     */
-    @Override
-    public int insertStudent(String account, String cid, int type) {
-       Students student = new Students();
-       student.setCid(cid);
-       student.setAccount(account);
-       student.setStype(type);
-       return studentsMapper.insert(student);
-    }
+
 
     @Override
     public course searchCourseWithCid(String cid) {
@@ -85,6 +70,7 @@ public class CourseServiceImpl implements CourseService {
         queryWrapper.eq("cid",cid);
         return courseMapper.selectOne(queryWrapper);
     }
+
 
 
 

@@ -19,13 +19,10 @@ import java.util.Map;
 @RequestMapping(value = "/Login",produces = "application/json; charset=UTF-8")
 public class UserController {
 
-    private final UserMapper userMapper;
-
     private final UserService userService;
 
     @Autowired
-    public UserController(UserMapper userMapper, UserService userService) {
-        this.userMapper = userMapper;
+    public UserController( UserService userService) {
         this.userService = userService;
     }
     /**根据用户账号返回一个User对象,注意：未测试
@@ -50,7 +47,7 @@ public class UserController {
     @RequestMapping("/UpdateUser")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public int UpdateUser(@RequestBody Map<String, Map<String, Object>> map){
+    public int updateUser(@RequestBody Map<String, Map<String, Object>> map){
         return userService.UpdateUser(map);
     }
 

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int UpdateUser(Map<String, Map<String, Object>> map) {
+    public int updateUser(Map<String, Map<String, Object>> map) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         String account = map.get("id").get("id").toString();
         String password = map.get("password").get("password").toString();

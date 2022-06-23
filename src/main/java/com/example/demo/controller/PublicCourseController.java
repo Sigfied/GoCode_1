@@ -23,7 +23,7 @@ public class PublicCourseController {
     private final CourseService courseService;
 
     @Autowired
-    public PublicCourseController(CourseMapper courseMapper, CourseService courseService) {
+    public PublicCourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
