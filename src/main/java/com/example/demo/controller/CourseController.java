@@ -8,6 +8,7 @@ import com.example.demo.service.StudentService;
 import com.example.demo.service.TopicsetService;
 import com.example.demo.tools.MathUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import java.util.List;
  * @author lenovo
  */
 @Controller
+@Slf4j
 @RequestMapping(value = "/Course",produces = "application/json; charset=UTF-8")
 public class CourseController {
 
@@ -288,7 +290,7 @@ public class CourseController {
         String tid = jsonObject.getString("tid");
         String account = jsonObject.getString("account");
         JSONArray questions = jsonObject.getJSONArray("questions");
-        double sumPoint = 0;
+        BigDecimal sumPoint = BigDecimal.valueOf(0);
         for (int i = 0; i < questions.length(); i++) {
             JSONObject question = questions.getJSONObject(i);
             String outputExample = question.getString("output");
@@ -299,10 +301,10 @@ public class CourseController {
             else{
                 question.put("mypoint","0");
             }
-            sumPoint +=Double.parseDouble(question.getString("point"));
+            log.debug(question.getString("point"));
+            sumPoint = sumPoint.add(new BigDecimal(question.getString("point")));
         }
-        BigDecimal sum = BigDecimal.valueOf(sumPoint);
-       return courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sum);
+       return courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sumPoint);
     }
 
 }
