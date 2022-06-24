@@ -7,6 +7,7 @@ import com.example.demo.service.QuestionService;
 import com.example.demo.service.StudentService;
 import com.example.demo.service.TopicsetService;
 import com.example.demo.tools.MathUtils;
+import com.example.demo.tools.RunCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -307,4 +309,17 @@ public class CourseController {
        return courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sumPoint);
     }
 
+
+    /**
+     * @author GYJ
+     * @param jsonRequest 里面有code ,input,lang
+     * */
+    @RequestMapping(value="/getRunCodeResult",produces = "application/json")
+    public String getRunCodeResult(String jsonRequest) throws JSONException, IOException {
+        JSONObject jsonResult = new JSONObject(jsonRequest);
+        String code = jsonResult.getString("code");
+        String input = jsonResult.getString("input");
+        String lang = jsonResult.getString("lang");
+        return RunCode.getResult(code,input,lang);
+    }
 }
