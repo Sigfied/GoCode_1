@@ -21,6 +21,7 @@ import java.util.Map;
 @RequestMapping(value = "/PublicCourse",produces = "application/json; charset=UTF-8")
 public class PublicCourseController {
 
+
     private final CourseService courseService;
 
     @Autowired
