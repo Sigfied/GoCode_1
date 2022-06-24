@@ -24,20 +24,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loginReturnUser(Map<String, Map<String, Object>> map) {
-        String id = map.get("id").get("id").toString();
-        String password = map.get("password").get("password").toString();
+    public User loginReturnUser(String account,String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",id).eq("password",password);
+        queryWrapper.eq("account",account).eq("password",password);
         return userMapper.selectOne(queryWrapper);
     }
 
     @Override
     public int updateUser(Map<String, Map<String, Object>> map) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        String account = map.get("id").get("id").toString();
+        String account = map.get("account").get("account").toString();
         String password = map.get("password").get("password").toString();
-        String id = map.get("account").get("account").toString();
         String uname = map.get("uname").get("uname").toString();
         updateWrapper.eq("account",account).eq("password",password);
         User user = new User();

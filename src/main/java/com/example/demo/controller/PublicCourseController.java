@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.course;
-import com.example.demo.mapper.CourseMapper;
 import com.example.demo.service.CourseService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,12 +37,13 @@ public class PublicCourseController {
     @RequestMapping(value="/ShowPublicCourseList" ,produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public List<course> showPublicCourseList(@RequestBody Map<String, Map<String, Object>> map){
-        String account = map.get("account").get("account").toString();
+    public List<course> showPublicCourseList(@RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String account = jsonObject.getString("account");
         return courseService.showPublicCourseList(account);
     }
 
-    /**用户提交课程id查询到课,注意：未测试
+    /**用户提交课程id查询到课,通过测试
      * @param map 课程id{cid:".."}
      * @return 返回course
      * @date 6.22 14:30
@@ -54,6 +56,7 @@ public class PublicCourseController {
         String cid = map.get("cid").get("cid").toString();
         return courseService.searchCourseWithCid(cid);
     }
+
     //修改完成usercontroller，CourseController,以及配套sercive，impl
     //添加了返回用户信息，添加了修改用户信息，查询公共课列表，根据id查询课，展示用户所选课
 

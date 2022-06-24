@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -26,7 +27,7 @@ public class Question {
     /**题目描述*/
     private String qdescribtion;
     /**题目分值*/
-    private Float qpoint;
+    private BigDecimal qpoint;
     /**题目输入样例，或者选项*/
     private String qinput;
     /**题目输出样例，或者答案啊*/

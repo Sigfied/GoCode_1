@@ -1,21 +1,18 @@
 package com.example.demo.service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.demo.entity.Favorites;
 import com.example.demo.entity.Students;
 import com.example.demo.entity.User;
-import com.example.demo.entity.course;
-import com.example.demo.mapper.CourseMapper;
 import com.example.demo.mapper.StudentsMapper;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.service.CourseService;
 import com.example.demo.service.StudentService;
-import com.example.demo.tools.MathUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,19 +49,27 @@ public class StudentServiceImpl implements StudentService {
         return studentsMapper.insert(student);
     }
 
+    @Data
+    private static class UserStudent{
+        String account;
+        String name;
+    }
     @Override
-    public List<Map> showAllStudent(String cid) {
+    @ResponseBody
+    public String showAllStudent(String cid) throws JsonProcessingException {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("cid",cid);
-        List<Map> list = new ArrayList<>();
+        List<UserStudent> list = new ArrayList<>();
         for(Students students:studentsMapper.selectList(queryWrapper)){
             QueryWrapper<User> queryWrapper1 = new QueryWrapper<>();
             queryWrapper1.eq("account",students.getAccount());
-            Map<String,String> map = new HashMap<>(1);
-            map.put(students.getAccount(),userMapper.selectOne(queryWrapper1).getUname());
-            list.add(map);
+            UserStudent userStudent = new UserStudent();
+            userStudent.setName(userMapper.selectOne(queryWrapper1).getUname());
+            userStudent.setAccount(students.getAccount());
+            list.add(userStudent);
         }
-        return list;
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(list);
     }
 
     @Override

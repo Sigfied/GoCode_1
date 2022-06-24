@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Favorites;
 import com.example.demo.entity.TopicSet;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public interface TopicsetService {
      * @date 6.23 15:30
      *
      * */
-    int addTopicSet(String cid, int tisexam, Date tstarttime, Date tendtime, int tstatus, int tifcansee);
+    int addTopicSet(String cid, int tisexam, LocalDateTime tstarttime, LocalDateTime tendtime, int tstatus, int tifcansee,String tname);
 
 
     /**修改题目集信息,注意：未测试，使用Integer.parseInt没有校验
@@ -35,7 +34,7 @@ public interface TopicsetService {
      * @date 6.23 15:30
      *
      * */
-    int updateTopicSet(String cid,int tisexam, Date tstarttime, Date tendtime, int tstatus, int tifcansee);
+    int updateTopicSet(String cid, int tisexam, LocalDateTime tstarttime, LocalDateTime tendtime, int tstatus, int tifcansee);
 
     /**增加题目到题目集,注意：未测试，未完成，json对应的包未导入，json格式有疑问
      * @param  tid：“题目集id”，

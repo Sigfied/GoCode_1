@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @TableName("topicset")
@@ -21,11 +20,11 @@ public class TopicSet {
 
     private int tisexam;
 
-    private Date tstarttime;
+    private LocalDateTime tstarttime;
 
-    private Date tendtime;
+    private LocalDateTime tendtime;
 
-    private int tstaus;
+    private int tstatus;
 
     private float taverage;
 
@@ -33,7 +32,9 @@ public class TopicSet {
 
     private float tpassingrate;
 
-    private int tifcanse;
+    private int tifcansee;
+
+    private String tname;
 
     @TableField(value = "create_time" ,fill = FieldFill.INSERT)
     private LocalDateTime create_time;

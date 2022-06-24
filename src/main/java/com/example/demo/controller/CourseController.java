@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.TopicSet;
 import com.example.demo.entity.course;
-import com.example.demo.mapper.CourseMapper;
-import com.example.demo.mapper.StudentsMapper;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.StudentService;
 import com.example.demo.service.TopicsetService;
 import com.example.demo.tools.MathUtils;
-import netscape.javascript.JSObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +26,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/Course",produces = "application/json; charset=UTF-8")
 public class CourseController {
-
 
     private final CourseService courseService;
     private final StudentService studentService;
@@ -46,12 +41,11 @@ public class CourseController {
     }
 
 
-    /**创建新课程,注意：未测试
+    /**创建新课程，通过测试
      * @param map {cname:"课程名" , introduce:"课程简介" , creator:"创建者姓名" , startTime:"课程开始时间",endTime:"课程结束时间"}
      * @return 返回int
-     * @date 6.22 14:30
-     *
-     * */
+     * @date  6.22 14:30
+     *  */
     @RequestMapping(value = "/InsertCourse" ,produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
@@ -66,7 +60,7 @@ public class CourseController {
     }
 
 
-    /**展示用户所有所选课,注意：未测试
+    /**展示用户所有所选课,通过测试
      * @param map 用户信息{account:""}
      * @return 返回List<course>
      * @date 6.22 14:30
@@ -111,7 +105,7 @@ public class CourseController {
         return studentService.isTeacher(account,cid);
     }
 
-    /**老师查看所有学生,注意：有warning
+    /**老师查看所有学生,通过测试
      * @param map {cid:"课程id" }
      * @return 返回List<map<学号，姓名>>
      * @date 6.23 15:30
@@ -120,7 +114,7 @@ public class CourseController {
     @RequestMapping(value="/showAllStudent",produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public List<Map> showAllStudent (@RequestBody Map<String, Map<String, Object>> map){
+    public String showAllStudent (@RequestBody Map<String, Map<String, Object>> map) throws JsonProcessingException {
         String cid = map.get("cid").get("cid").toString();
         return studentService.showAllStudent(cid);
     }
@@ -142,7 +136,7 @@ public class CourseController {
 
 
 
-    /**增加题目到题目集,注意：未测试，未完成，json对应的包未导入，json格式有疑问
+    /**增加题目到题目集,通过测试，需要传递一个包装好的JSON格式
      * @param map {tid：“题目集id”，qtypt:"1单选，2多选，3填空，4编程",qdescribtion:"题目描述"
      *           qpoint：“分数”,qinput:"输入",qoutput:"输出"}
      * @return int 1成功 0失败
@@ -154,11 +148,12 @@ public class CourseController {
     @CrossOrigin(origins = {"*"})
     public int insertQuestionToTopicSet (@RequestBody Map<String, Map<String, Object>> map){
         String tid = map.get("tid").get("tid").toString();
-        int qtypt = Integer.parseInt(map.get("qtypt").get("qtypt").toString());
+        int qtype = Integer.parseInt(map.get("qtype").get("qtype").toString());
         String qdescribtion = map.get("qdescribtion").get("qdescribtion").toString();
         double qpoint = Double.parseDouble(map.get("qpoint").get("qpoint").toString());
         String qinput = map.get("qinput").get("qinput").toString();
         String qoutput = map.get("qoutput").get("qoutput").toString();
+        questionService.insertQuestionToTopicSet(tid,qtype,qdescribtion,qpoint,qinput,qoutput);
         return  0;
     }
 
@@ -176,7 +171,8 @@ public class CourseController {
         return  questionService.deleteQuestionFromTopicSet(id);
     }
 
-    /**修改题目从题目集内,注意：未测试，未编码
+    /**
+     * 修改题目从题目集内,注意：未测试，未编码
      * @param map {id:"题目唯一标识"，tid：“题目集id”,qdescribtion:"题目描述"
      *      qpoint：“分数”,qinput:"输入",qoutput:"输出"}}
      * @return int 1成功 0失败
@@ -185,7 +181,7 @@ public class CourseController {
      * */
 
 
-    /**老师给课程添加题目集,注意：未测试，使用Integer.parseInt没有校验
+    /**老师给课程添加题目集,注意：通过测试，使用Integer.parseInt没有校验
      * @param map {cid:"课程号",tisexam:"是否考试1考试，0题目",
      * tstarttime:"题目集开发时间",tendtime:"题目集结束时间",SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
      * tstatus:"0：未开放，1：正在开发，2：已结束",
@@ -204,19 +200,10 @@ public class CourseController {
         String tendtime = map.get("tendtime").get("tendtime").toString();
         int tstatus = Integer.parseInt(map.get("tstatus").get("tstatus").toString());
         int tifcansee = Integer.parseInt(map.get("tifcansee").get("tifcansee").toString());
-
-
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date1 = df1.parse(tstarttime);
-            date2 = df1.parse(tendtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return  topicsetService.addTopicSet(cid,tisexam,date1,date2,tstatus,tifcansee);
+        String tname = map.get("tname").get("tname").toString();
+        LocalDateTime start = LocalDateTime.parse(tstarttime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime end = LocalDateTime.parse(tendtime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return  topicsetService.addTopicSet(cid,tisexam,start,end,tstatus,tifcansee,tname);
     }
 
     /**展示所有题目集,注意：未测试，
@@ -276,18 +263,9 @@ public class CourseController {
         int tstatus = Integer.parseInt(map.get("tstatus").get("tstatus").toString());
         int tifcansee = Integer.parseInt(map.get("tifcansee").get("tifcansee").toString());
 
-
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date1 = df1.parse(tstarttime);
-            date2 = df1.parse(tendtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return  topicsetService.updateTopicSet(cid,tisexam,date1,date2,tstatus,tifcansee);
+        LocalDateTime start = LocalDateTime.parse(tstarttime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime end = LocalDateTime.parse(tendtime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return  topicsetService.updateTopicSet(cid,tisexam,start,end,tstatus,tifcansee);
     }
 
 

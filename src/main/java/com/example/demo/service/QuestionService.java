@@ -1,9 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.course;
-
-import java.util.List;
-
 /**
  * @author Admin
  */
@@ -16,4 +12,15 @@ public interface QuestionService {
      *
      * */
     int deleteQuestionFromTopicSet(String id);
+
+    /**添加一道题到题目集内
+     * @param tid 题目集id
+     * @param qdescribtion 题目描述
+     * @param qpoint 题目的分数
+     * @param qtype 题目类型（此处枚举，选择题，填空题，编程题）
+     * @param qinput 输入样例（选择题的输入样例为选项，填空题的数据样例可以为空）
+     * @param qoutput 输出样例（选择题的输出样例为答案，填空题的输出样例为答案）
+     * @return int 1成功 0失败
+     * */
+    int insertQuestionToTopicSet(String tid,int qtype,String qdescribtion,double qpoint, String qinput, String qoutput);
 }

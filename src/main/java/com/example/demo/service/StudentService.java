@@ -1,11 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.User;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.List;
-import java.util.Map;
-
+/**
+ * @author lenovo
+ */
 public interface StudentService {
 
     /**
@@ -18,10 +17,13 @@ public interface StudentService {
 
     /**
      * 返回学生信息列表，有代码规范问题暂时无法解决
+     *
      * @param cid 课程号
-     * @return List<Map<account,uname>>
-     * */
-    List<Map> showAllStudent(String cid);
+     * @return List<Map < account, uname>>
+     * @exception JsonProcessingException 可能会抛出异常
+     * @throws JsonProcessingException 可能会抛出异常
+     */
+    String showAllStudent(String cid) throws JsonProcessingException;
 
     /**
      * 删除学生
