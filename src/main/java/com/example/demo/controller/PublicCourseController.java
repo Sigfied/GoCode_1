@@ -30,7 +30,7 @@ public class PublicCourseController {
     }
 
     /**根据数据返回公共课程列表,通过测试
-     * @param map 模糊查询内容{tip:“..”}
+     * @param jsonRequest 模糊查询内容{tip:“..”}
      * @return 返回一个List<course>对象
      * @date 6.22 14:30
      *
