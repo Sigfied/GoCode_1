@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class Question {
     @TableId(value = "id")
     private Long id;
-
     /**题目Id*/
     private String qid;
     /**所在题目集Id*/

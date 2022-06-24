@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author flz
@@ -45,16 +44,16 @@ public class PublicCourseController {
     }
 
     /**用户提交课程id查询到课,通过测试
-     * @param map 课程id{cid:".."}
+     * @param jsonRequest 课程id{cid:".."}
      * @return 返回course
      * @date 6.22 14:30
-     *
      * */
     @RequestMapping(value="/SearchCourseWithCid",produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public course searchCourseWithCid(@RequestBody Map<String, Map<String, Object>> map){
-        String cid = map.get("cid").get("cid").toString();
+    public course searchCourseWithCid(@RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String cid = jsonObject.getString("cid");
         return courseService.searchCourseWithCid(cid);
     }
 

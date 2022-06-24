@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,11 +27,11 @@ public class TopicSet {
 
     private int tstatus;
 
-    private float taverage;
+    private BigDecimal taverage;
 
-    private float texcellentrate;
+    private BigDecimal texcellentrate;
 
-    private float tpassingrate;
+    private BigDecimal tpassingrate;
 
     private int tifcansee;
 

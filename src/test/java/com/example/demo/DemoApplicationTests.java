@@ -5,10 +5,14 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,8 +70,8 @@ class DemoApplicationTests {
     @Test
     void insertQuestionTest(){
         String qinput = "{\"questionA\":\"A\",\"questionB\":\"B\",\"questionC\":\"C\",\"questionD\":\"D\"}";
-        String qoutput = "{\"answer\":\"A\"}";
-        questionService.insertQuestionToTopicSet("1195271125",1,"测试第一题",1.5,qinput,qoutput);
+        String qoutput = "{\"output\":\"A\"}";
+        questionService.insertQuestionToTopicSet("1195271125",1,"测试第二题",1.5,qinput,qoutput);
     }
     @Test
     void insertTopicTest(){
@@ -90,5 +94,29 @@ class DemoApplicationTests {
     @Test
     void loginReturnUser(){
         userService.loginReturnUser("20201307","123456");
+    }
+
+    @Test
+    public void insertAnswerSet() throws JSONException {
+        String jsonRequest = "{\"tid\":\"1195271125\",\"account\":\"20201307\",\"questions\":[{\"qtype\":\"1\",\"qid\":\"3472032195\",\"describtion\":\"测试第一题\",\"input\":{\"questionA\":\"A\",\"questionB\":\"B\",\"questionC\":\"C\",\"questionD\":\"D\"},\"output\":\"A\",\"point\":\"1.5\",\"answer\":\"A\",\"mypoint\":\"\"}]}";
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String tid = jsonObject.getString("tid");
+        String account = jsonObject.getString("account");
+        JSONArray questions = jsonObject.getJSONArray("questions");
+        BigDecimal sumPoint = BigDecimal.valueOf(0);
+        for (int i = 0; i < questions.length(); i++) {
+            JSONObject question = questions.getJSONObject(i);
+            String outputExample = question.getString("output");
+            String answer = question.getString("answer");
+            if(outputExample.equals(answer)){
+                question.put("mypoint",question.getString("point"));
+            }
+            else{
+                question.put("mypoint","0");
+            }
+            log.debug(question.getString("point"));
+            sumPoint = sumPoint.add(new BigDecimal(question.getString("point")));
+        }
+        courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sumPoint);
     }
 }

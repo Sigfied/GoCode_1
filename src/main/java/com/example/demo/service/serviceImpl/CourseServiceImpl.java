@@ -1,14 +1,17 @@
 package com.example.demo.service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.entity.Answerset;
 import com.example.demo.entity.Students;
 import com.example.demo.entity.course;
+import com.example.demo.mapper.AnswerSetMapper;
 import com.example.demo.mapper.CourseMapper;
 import com.example.demo.mapper.StudentsMapper;
 import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,10 +25,13 @@ public class CourseServiceImpl implements CourseService {
     private final StudentsMapper studentsMapper;
     private final CourseMapper courseMapper;
 
+    private final AnswerSetMapper answerSetMapper;
+
     @Autowired
-    public CourseServiceImpl(StudentsMapper studentsMapper, CourseMapper courseMapper) {
+    public CourseServiceImpl(StudentsMapper studentsMapper, CourseMapper courseMapper, AnswerSetMapper answerSetMapper) {
         this.studentsMapper = studentsMapper;
         this.courseMapper = courseMapper;
+        this.answerSetMapper = answerSetMapper;
     }
 
     @Override
@@ -71,7 +77,21 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.selectOne(queryWrapper);
     }
 
-
+    /**
+     * @param tid          题目集id
+     * @param account      提交记录的学生账号
+     * @param questionJson String 有关本次题目集的所有答题的记录
+     * @param apoint       BigDecimal 用户本次答题的分数
+     */
+    @Override
+    public int insertToAnswerSet(String tid, String account, String questionJson, BigDecimal apoint) {
+        Answerset answerSet = new Answerset();
+        answerSet.setTid(tid);
+        answerSet.setAccount(account);
+        answerSet.setQuestions(questionJson);
+        answerSet.setApoint(apoint);
+        return answerSetMapper.insert(answerSet);
+    }
 
 
 }

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Favorites;
 import com.example.demo.service.FavoritesService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lenovo
@@ -31,9 +32,10 @@ public class FavoritesController {
     @RequestMapping("/insertFavorites")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public int insertFavorites(@RequestBody Map<String, Map<String, Object>> map){
-        String favoritesName = map.get("favoritesName").get("favoritesName").toString();
-        String account = map.get("account").get("account").toString();
+    public int insertFavorites(@RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String favoritesName = jsonObject.getString("favoritesName");
+        String account = jsonObject.getString("account");
         return favoritesService.insertFavorites(favoritesName,account);
     }
 
@@ -44,8 +46,9 @@ public class FavoritesController {
     @RequestMapping("/queryFavorites")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public List<Favorites> queryFavorites(@RequestBody Map<String, Map<String, Object>> map){
-        String account = map.get("account").get("account").toString();
+    public List<Favorites> queryFavorites(@RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String account = jsonObject.getString("account");
         return favoritesService.queryFavorites(account);
     }
 

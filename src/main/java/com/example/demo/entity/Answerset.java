@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -21,9 +22,9 @@ public class Answerset {
     /**用户账号*/
     private String account;
     /**错题序列，以JSON格式存储，需要转为JSON*/
-    private String awrongset;
+    private String questions;
     /**该同学在本次题目集中的得分*/
-    private float apoint;
+    private BigDecimal apoint;
 
     @TableField(value = "create_time" ,fill = FieldFill.INSERT)
     private LocalDateTime create_time;

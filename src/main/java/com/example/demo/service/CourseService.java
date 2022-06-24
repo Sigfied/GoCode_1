@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.course;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -34,9 +35,20 @@ public interface CourseService {
      List<course> showPublicCourseList(String account) ;
 
 
-
+    /**
+     *
+     * @param cid 课程id
+     * @return 返回course对象
+     * */
     course searchCourseWithCid(String cid);
 
-
+    /**
+     * @param tid 题目集id
+     * @param account 提交记录的学生账号
+     * @param questionJson String 有关本次题目集的所有答题的记录
+     * @param apoint BigDecimal 用户本次答题的分数
+     * @return 0 1
+     * */
+    int insertToAnswerSet(String tid, String account, String questionJson, BigDecimal apoint );
 
 }
