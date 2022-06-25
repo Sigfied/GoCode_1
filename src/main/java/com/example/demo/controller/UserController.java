@@ -41,8 +41,9 @@ public class UserController {
         JSONObject jsonObject = new JSONObject(jsonRequest);
         String account = jsonObject.getString("account");
         String password = jsonObject.getString("password");
+        String email = jsonObject.getString("email");
         log.debug(account + "\n" +password);
-        return userService.loginReturnUser(account,password);
+        return userService.loginReturnUser(account,password,email);
     }
 
     /**根据用户提交信息修改个人信息,注意：未测试

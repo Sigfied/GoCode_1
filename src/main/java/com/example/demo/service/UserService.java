@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface UserService  {
 
-    User loginReturnUser(String account,String password);
+    User loginReturnUser(String account,String password,String email);
 
     //我怀疑这个地方有问题
     int updateUser(@RequestBody Map<String, Map<String, Object>> map);

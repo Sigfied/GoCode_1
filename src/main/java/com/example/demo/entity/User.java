@@ -19,6 +19,8 @@ public class User {
 
     private String password;
 
+    private String email;
+
     private String uname;
 
     @TableField(value = "create_time" ,fill = FieldFill.INSERT)

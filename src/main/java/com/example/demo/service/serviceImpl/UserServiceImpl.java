@@ -24,9 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loginReturnUser(String account,String password) {
+    public User loginReturnUser(String account,String password,String email) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account",account).eq("password",password);
+        //这里有一个嵌套查询，使用了and语句的嵌套
+        queryWrapper.eq("password",password)
+                .and(userQueryWrapper -> userQueryWrapper.eq("account", account).or().eq("email",email));
         return userMapper.selectOne(queryWrapper);
     }
 
