@@ -4,6 +4,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,7 +16,8 @@ import java.io.File;
 @Slf4j
 public class ExcelFileToJson {
 
-    public  static void tryExclTranslateToJson(String fileUrl){
+    @NotNull
+    public  static JSONArray tryExclTranslateToJson(String fileUrl){
         int starRow = 1;
         Sheet sheet;
         Workbook book;
@@ -40,7 +42,7 @@ public class ExcelFileToJson {
                 }
                 JSONObject object = new JSONObject();
                 object.put("序号",cell1.getContents());
-                object.put("题目描述",cell2.getContents());
+                object.put("description",cell2.getContents());
                 object.put("input",cell3.getContents());
                 object.put("output",cell4.getContents());
                 object.put("point",cell5.getContents());
@@ -52,5 +54,6 @@ public class ExcelFileToJson {
             e.printStackTrace();
         }
         log.info("here is excel "+array);
+        return array;
     }
 }

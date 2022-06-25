@@ -1,18 +1,54 @@
 package com.example.demo;
 
+import com.example.demo.entity.Question;
+import com.example.demo.mapper.QuestionMapper;
+import com.example.demo.mapper.TopicSetMapper;
 import com.example.demo.tools.ExcelFileToJson;
+import com.example.demo.tools.MathUtils;
 import com.example.demo.tools.RunCode;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
 public class ExcelFileToJsonTests {
 
+    @Autowired
+    private TopicSetMapper topicSetMapper;
+
+    @Autowired
+    private QuestionMapper questionMapper;
     @Test
-    void ExcelFileToJsonTest(){
-        ExcelFileToJson.tryExclTranslateToJson("F:\\questions.xls");
+    void ExcelFileToJsonTest() throws JSONException {
+       JSONArray jsonArray =  ExcelFileToJson.tryExclTranslateToJson("F:\\questions.xls");
+       String tid = "8692599914";
+       List<Question> questionList = new ArrayList<>();
+       for (int i = 0; i < jsonArray.length(); i++) {
+            Question question = new Question();
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            if(jsonObject!=null) {
+                question.setQid(MathUtils.getPrimaryKey());
+                question.setQtype(Integer.valueOf(jsonObject.getString("type")));
+                question.setQdescribtion(jsonObject.getString("description"));
+                question.setQinput(jsonObject.getString("input"));
+                question.setQoutput(jsonObject.getString("output"));
+                question.setTid(tid);
+                question.setQpoint(new BigDecimal(jsonObject.getString("point")));
+                questionList.add(question);
+            }
+       }
+       log.info(questionList.toString());
+       int i = questionMapper.insertBatchSomeColumn(questionList);
+       log.info("插入条数："+i);
     }
 
     @Test
