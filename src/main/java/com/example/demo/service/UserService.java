@@ -15,4 +15,11 @@ public interface UserService  {
     //我怀疑这个地方有问题
     int updateUser(@RequestBody Map<String, Map<String, Object>> map);
 
+    /**增加一个用户，表示注册
+    * @param account 账号-学号
+     * @param password 密码
+     * @param email 邮箱
+     * @return 返回值
+    * */
+    int insertUser(String account,String password,String email);
 }

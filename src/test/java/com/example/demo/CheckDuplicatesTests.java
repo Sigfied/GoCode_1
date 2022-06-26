@@ -19,7 +19,7 @@ public class CheckDuplicatesTests {
     @Test
     void sendMail() throws Exception {
         String voidMessage = VerCodeGenerateUtil.generateVerCode();
-        String toEmail = "1536833614@qq.com";
+        String toEmail = "2034689681@qq.com";
         MailUtils.sendMail(toEmail,voidMessage);
     }
 
@@ -32,4 +32,6 @@ public class CheckDuplicatesTests {
         User user = service.loginReturnUser(account, password,email);
         log.info(user.toString());
     }
+
+
 }

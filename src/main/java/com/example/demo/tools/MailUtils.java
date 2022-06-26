@@ -1,15 +1,23 @@
 package com.example.demo.tools;
 
 import com.sun.mail.util.MailSSLSocketFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.lf5.util.Resource;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.Properties;
 
 /**
  * @author lenovo
  */
+@Slf4j
 public class MailUtils {
     //发送第二封验证码邮件
 
@@ -97,5 +105,47 @@ public class MailUtils {
 
     }
 
+
+    /**
+     * 读取邮件模板
+     * 替换模板中的信息
+     *
+     * @param title 内容
+     * @return
+     */
+    public String buildContent(String title) {
+        //加载邮件html模板
+        Resource resource = new Resource("mail.ftlh");
+        InputStream inputStream = null;
+        BufferedReader fileReader = null;
+        StringBuffer buffer = new StringBuffer();
+        String line = "";
+        try {
+            inputStream = resource.getInputStream();
+            fileReader = new BufferedReader(new InputStreamReader(inputStream));
+            while ((line = fileReader.readLine()) != null) {
+                buffer.append(line);
+            }
+        } catch (Exception e) {
+            log.info("发送邮件读取模板失败{}", e);
+        } finally {
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //替换html模板中的参数
+        return MessageFormat.format(buffer.toString(), title);
+    }
 
 }
