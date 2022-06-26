@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class VerCodeGenerateUtil {
     /**验证码包含的字段，可自己设置*/
-    private static final String SYMBOLS = "01234ABCDEFGHIGK56789LMNOPQRSTUVWXYZ";
+    private static final String SYMBOLS = "0123456789ABCDEFGHIGKLMNOPQRSTUVWXYZ";
     private static final Random RANDOM = new SecureRandom();
     /**生成 6 位数的随机数字*/
     public static String generateVerCode() {

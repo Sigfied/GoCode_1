@@ -30,7 +30,7 @@
                         </font>
                     </h2>
                     <!-- 中文 -->
-                    <p>您好！感谢您使用GoCode，您的账号正在进行邮箱验证，验证码为：<span style="color: #ff8c00; ">{0}</span>,请尽快填写验证码完成验证且妥善保存您的验证码！</p><br>
+                    <p>您好！感谢您使用GoCode，您的账号正在进行邮箱验证，验证码为：<span style="color: #ff8c00; " th:text="verificationCode"></span>,请尽快填写验证码完成验证且妥善保存您的验证码！</p><br>
                     <!-- 英文 -->
                     <h2 style="margin: 5px 0; ">
                         <span style="line-height: 20px;  color: #333333; ">
@@ -39,7 +39,7 @@
                         </span>
                     </h2>
                     <p>Hello! Thanks for using GoCode, your account is being authenticated by email, the
-                        verification code is:<span style="color: #ff8c00; ">{0}</span>, Please fill in the verification code as soon as
+                        verification code is:<span style="color: #ff8c00; " th:text="${verificationCode}"></span>, Please fill in the verification code as soon as
                         possible and keep your verification code!</p>
                     <div style="width:100%;margin:0 auto;">
                         <div style="padding:10px 10px 0;border-top:1px solid #ccc;color:#747474;margin-bottom:20px;line-height:1.3em;font-size:12px;">

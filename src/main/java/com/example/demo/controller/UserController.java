@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.tools.MD5Utils;
 import com.example.demo.tools.MailUtils;
 import com.example.demo.tools.VerCodeGenerateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,7 @@ public class UserController {
         String password = jsonObject.getString("password");
         String email = jsonObject.getString("email");
         log.debug(account + "\n" +password);
+        password = MD5Utils.encryptByMd5(password);
         User user = userService.loginReturnUser(account,password,email);
         if (user == null) {
             user = new User();
@@ -96,7 +98,7 @@ public class UserController {
     @RequestMapping(value="/insertUser" ,produces = "application/json")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public int  insertUser(@RequestBody String jsonRequest) throws Exception {
+    public int insertUser(@RequestBody String jsonRequest) throws Exception {
         JSONObject jsonObject = new JSONObject(jsonRequest);
         String account = jsonObject.getString("account");
         String password = jsonObject.getString("password");
@@ -104,6 +106,7 @@ public class UserController {
         String voidMessage = jsonObject.getString("voidMessage");
         //从map中获取临时保存的邮箱-验证码键值对
         String voidMessageInMap = userVoidMessageMap.get(email);
+        password = MD5Utils.encryptByMd5(password);
         if(voidMessage.equals(voidMessageInMap)){
            return userService.insertUser(account, password, email);
         }else {
