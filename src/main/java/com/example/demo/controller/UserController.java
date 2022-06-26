@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @Slf4j
-@RequestMapping(value = "/Login",produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/User",produces = "application/json; charset=UTF-8")
 public class UserController {
 
     private final UserService userService;
@@ -49,7 +49,12 @@ public class UserController {
         String password = jsonObject.getString("password");
         String email = jsonObject.getString("email");
         log.debug(account + "\n" +password);
-        return userService.loginReturnUser(account,password,email);
+        User user = userService.loginReturnUser(account,password,email);
+        if (user == null) {
+            user = new User();
+            user.setUname("null");
+        }
+        return  user;
     }
 
     /**根据用户提交信息修改个人信息,注意：未测试
