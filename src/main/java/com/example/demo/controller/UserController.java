@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @Slf4j
-@RequestMapping(value = "/User",produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/Login",produces = "application/json; charset=UTF-8")
 public class UserController {
 
     private final UserService userService;

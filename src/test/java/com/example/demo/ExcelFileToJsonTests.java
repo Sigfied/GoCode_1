@@ -6,6 +6,7 @@ import com.example.demo.mapper.TopicSetMapper;
 import com.example.demo.tools.ExcelFileToJson;
 import com.example.demo.tools.MathUtils;
 import com.example.demo.tools.RunCode;
+import com.example.demo.tools.photoTools.DocAnalysis;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,4 +99,10 @@ public class ExcelFileToJsonTests {
         log.info(RunCode.getResult(code, input, lang));
     }
 
+    @Test
+    void photoToolsTest() throws Exception {
+        String filePath = "E:\\桌面\\实验报告\\2.png";
+        String result = DocAnalysis.docAnalysis(filePath);
+        log.info(result);
+    }
 }

@@ -59,12 +59,15 @@ public class CourseController {
     public int insertCourse(@RequestBody String jsonRequest) throws JSONException {
         JSONObject jsonObject = new JSONObject(jsonRequest);
         String cid = MathUtils.getPrimaryKey();
+        String account = jsonObject.getString("account");
         String cname  = jsonObject.getString("cname");
         String introduce =  jsonObject.getString("introduce");
         String creator =   jsonObject.getString("creator");
         String  startTime =   jsonObject.getString("startTime");
         String  endTime =   jsonObject.getString("endTime");
-        return courseService.createCourse(cid,cname,introduce,creator,startTime,endTime);
+        int i = courseService.createCourse(cid,cname,introduce,creator,startTime,endTime);
+        studentService.insertStudent(account,cid, 1);
+        return i;
     }
 
 

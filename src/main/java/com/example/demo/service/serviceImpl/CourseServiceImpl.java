@@ -43,8 +43,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int createCourse(String cid, String cname, String introduce, String creator, String  startTime, String  endTime) {
-        LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         course courseNew = new course();
         courseNew.setCid(cid);
         courseNew.setCcreator(creator);
