@@ -168,8 +168,7 @@ public class CourseController {
         double qpoint = Double.parseDouble(jsonObject.getString("qpoint"));
         String qinput = jsonObject.getString("qinput");
         String qoutput =jsonObject.getString("qoutput");
-        questionService.insertQuestionToTopicSet(tid,qtype,qdescribtion,qpoint,qinput,qoutput);
-        return  0;
+        return questionService.insertQuestionToTopicSet(tid,qtype,qdescribtion,qpoint,qinput,qoutput);
     }
 
     /**删除题目从题目集内,注意：未测试，题目的唯一标识应该是有的，在得到所有题目的方法内
