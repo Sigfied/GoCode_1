@@ -104,5 +104,14 @@ public class ExcelFileToJsonTests {
         String filePath = "E:\\桌面\\实验报告\\2.png";
         String result = DocAnalysis.docAnalysis(filePath);
         log.info(result);
+        JSONObject jsonObject = new JSONObject(result);
+        JSONArray array = jsonObject.getJSONArray("results");
+        List<String> results = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject words = (JSONObject) array.get(i);
+            JSONObject words2 = words.getJSONObject("words");
+            results.add(words2.getString("word"));
+        }
+       results.forEach(System.out::println);
     }
 }

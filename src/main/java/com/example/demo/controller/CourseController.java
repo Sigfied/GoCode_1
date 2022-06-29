@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.entity.Question;
 import com.example.demo.entity.TopicSet;
 import com.example.demo.entity.course;
+import com.example.demo.mapper.CourseMapper;
+import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.StudentService;
@@ -24,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,13 +43,18 @@ public class CourseController {
     private final StudentService studentService;
     private final TopicsetService topicsetService;
     private final QuestionService questionService;
+    private final CourseMapper courseMapper;
+
+    private final QuestionMapper questionMapper;
 
     @Autowired
-    public CourseController( QuestionService questionService, CourseService courseService, StudentService studentService,TopicsetService topicsetService) {
+    public CourseController(QuestionService questionService, CourseService courseService, StudentService studentService, TopicsetService topicsetService, CourseMapper courseMapper, QuestionMapper questionMapper) {
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicsetService = topicsetService;
         this.questionService = questionService;
+        this.courseMapper = courseMapper;
+        this.questionMapper = questionMapper;
     }
 
 
@@ -69,6 +79,22 @@ public class CourseController {
         studentService.insertStudent(account,cid, 1);
         return i;
     }
+
+    /**返回公共课程,注意：未测试，
+     * @param jsonRequest {}
+     * @return List<course>
+     * @date 6.29 15:30
+     *
+     * */
+    @RequestMapping(value="/showPersonalCourseList",produces = "application/json")
+    @ResponseBody
+    @CrossOrigin(origins = {"*"})
+    public List<course> showPersonalCourseList(@RequestBody String jsonRequest) throws JSONException {
+        QueryWrapper<course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("creator","Admin");
+        return new ArrayList<>(courseMapper.selectList(queryWrapper));
+    }
+
 
 
     /**展示用户所有所选课,通过测试
@@ -324,4 +350,23 @@ public class CourseController {
         String lang = jsonResult.getString("lang");
         return RunCode.getResult(code,input,lang);
     }
+
+
+    /**返回题目集内问题列表,注意：未测试，
+     * @param jsonRequest {tid:""}
+     * @return List<course>
+     * @date 6.29 15:30
+     *
+     * */
+    @RequestMapping(value="/showAllQuestion",produces = "application/json")
+    @ResponseBody
+    @CrossOrigin(origins = {"*"})
+    public List<Question> showAllQuestion(@RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonResult = new JSONObject(jsonRequest);
+        String tid = jsonResult.getString("tid");
+        QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tid",tid);
+        return new ArrayList<>(questionMapper.selectList(queryWrapper));
+    }
+
 }
