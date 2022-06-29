@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.UploadProperties;
 import com.example.demo.service.serviceImpl.UploadService;
 import com.example.demo.tools.photoTools.DocAnalysis;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +27,15 @@ public class UploadController {
     @Autowired
     private UploadService uploadService;
 
+    @Autowired
+    private UploadProperties uploadProperties;
+
     @PostMapping("/image")
     @ResponseBody
     public ResponseEntity<List> upload(@RequestParam("file") MultipartFile file) throws Exception {
         String fileName = uploadService.uploadImage(file);
         log.info(fileName);
-        String filePath = "H:\\EdgeDownLoad\\GoCode_1\\src\\main\\resources\\images\\"+fileName;
+        String filePath = uploadProperties.getPath()+fileName;
         String result = DocAnalysis.docAnalysis(filePath);
         log.info(result);
         JSONObject jsonObject = new JSONObject(result);
