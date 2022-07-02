@@ -8,8 +8,6 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 /**
  * @author GYJ
  */
@@ -33,15 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(Map<String, Map<String, Object>> map) {
+    public int updateUser(String account,String password) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        String account = map.get("account").get("account").toString();
-        String password = map.get("password").get("password").toString();
-        String uname = map.get("uname").get("uname").toString();
-        updateWrapper.eq("account",account).eq("password",password);
+        updateWrapper.eq("account",account);
         User user = new User();
-        user.setAccount(account);
-        user.setUname(uname);
+        user.setPassword(password);
+
         userMapper.update(user,updateWrapper);
         return userMapper.update(new User(),updateWrapper);
     }

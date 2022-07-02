@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
 
 /**
  * @author GYJ
@@ -13,7 +10,7 @@ public interface UserService  {
     User loginReturnUser(String account,String password,String email);
 
     //我怀疑这个地方有问题
-    int updateUser(@RequestBody Map<String, Map<String, Object>> map);
+    int updateUser(String account,String password);
 
     /**增加一个用户，表示注册
     * @param account 账号-学号

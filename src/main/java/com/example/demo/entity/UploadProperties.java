@@ -18,10 +18,9 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "file.upload")
 public class UploadProperties {
-    // 图片上传路径
+    /** 图片上传路径*/
     private String path;
-    // 文件上传允许类型
+    /** 上传类型*/
     private List<String> allowTypes;
-
 
 }

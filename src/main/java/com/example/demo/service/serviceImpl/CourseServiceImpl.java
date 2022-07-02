@@ -58,7 +58,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<course> showPublicCourseList(String account) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account",account);
+        queryWrapper.eq("account",account).eq("stype",0);
         List<course> courses = new ArrayList<>();
         for( Students students: studentsMapper.selectList(queryWrapper)){
             QueryWrapper<course> queryWrapperc = new QueryWrapper<>();
@@ -91,6 +91,23 @@ public class CourseServiceImpl implements CourseService {
         answerSet.setQuestions(questionJson);
         answerSet.setApoint(apoint);
         return answerSetMapper.insert(answerSet);
+    }
+
+    /**
+     * @param account      提交记录的学生账号
+     */
+    @Override
+    public List<course> showCreateCourseList(String account) {
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account",account);
+        queryWrapper.eq("stype",1);
+        List<course> courses = new ArrayList<>();
+        for( Students students: studentsMapper.selectList(queryWrapper)){
+            QueryWrapper<course> queryWrapperc = new QueryWrapper<>();
+            queryWrapperc.eq("cid",students.getCid());
+            courses.addAll(courseMapper.selectList(queryWrapperc));
+        }
+        return courses;
     }
 
 

@@ -9,6 +9,7 @@ import com.example.demo.service.StudentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,9 +23,12 @@ import java.util.Map;
  * @author Admin
  */
 @Service("StudentService")
+@Slf4j
 public class StudentServiceImpl implements StudentService {
 
+    @Autowired
     private final StudentsMapper studentsMapper;
+    @Autowired
     private final UserMapper userMapper;
 
     @Autowired
@@ -37,7 +41,10 @@ public class StudentServiceImpl implements StudentService {
     public int isTeacher(String account, String cid) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("account",account).eq("cid",cid);
-        return studentsMapper.selectOne(queryWrapper).getStype();
+        log.info(account + "\t" + cid);
+        int i  = studentsMapper.selectOne(queryWrapper).getStype();
+        log.info(String.valueOf(i));
+        return i;
     }
 
     @Override
@@ -46,7 +53,14 @@ public class StudentServiceImpl implements StudentService {
         student.setCid(cid);
         student.setAccount(account);
         student.setStype(type);
-        return studentsMapper.insert(student);
+        int i;
+        try {
+            i = studentsMapper.insert(student);
+        }
+        catch (Exception e) {
+            return 0;
+        }
+        return i;
     }
 
     @Data

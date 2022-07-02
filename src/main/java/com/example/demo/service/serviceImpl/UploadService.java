@@ -23,4 +23,15 @@ public class UploadService {
         file.transferTo(new File(uploadProperties.getPath()+fileName));
         return fileName;
     }
+
+    public String returnFilePath(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        return uploadProperties.getPath() + fileName;
+    }
+
+    public String uploadImage(String filepath,MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        file.transferTo(new File(filepath + fileName));
+        return fileName;
+    }
 }

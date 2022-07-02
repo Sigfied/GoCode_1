@@ -42,4 +42,6 @@ public class TopicSet {
 
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime update_time;
+
+    private BigDecimal tsumpoint;
 }

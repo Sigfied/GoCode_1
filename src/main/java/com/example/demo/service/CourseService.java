@@ -51,4 +51,9 @@ public interface CourseService {
      * */
     int insertToAnswerSet(String tid, String account, String questionJson, BigDecimal apoint );
 
+    /**返回我创建的所有课程
+     * @param account 题目集id
+     * @return 0 1
+     * */
+     List<course> showCreateCourseList(String account);
 }

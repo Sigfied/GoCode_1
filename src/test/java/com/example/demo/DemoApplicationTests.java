@@ -98,7 +98,40 @@ class DemoApplicationTests {
 
     @Test
     public void insertAnswerSet() throws JSONException {
-        String jsonRequest = "{\"tid\":\"1195271125\",\"account\":\"20201307\",\"questions\":[{\"qtype\":\"1\",\"qid\":\"3472032195\",\"describtion\":\"测试第一题\",\"input\":{\"questionA\":\"A\",\"questionB\":\"B\",\"questionC\":\"C\",\"questionD\":\"D\"},\"output\":\"A\",\"point\":\"1.5\",\"answer\":\"A\",\"mypoint\":\"\"}]}";
+        String jsonRequest = "\n" +
+                "{\n" +
+                "\t\"tid\": \"1195271125\",\n" +
+                "\t\"account\": \"20201307\",\n" +
+                "\t\"questions\": [{\n" +
+                "\t\t\"qtype\": \"1\",\n" +
+                "\t\t\"qid\": \"3472032195\",\n" +
+                "\t\t\"describtion\": \"测试第一题\",\n" +
+                "\t\t\"input\": {\n" +
+                "\t\t\t\"questionA\": \"A\",\n" +
+                "\t\t\t\"questionB\": \"B\",\n" +
+                "\t\t\t\"questionC\": \"C\",\n" +
+                "\t\t\t\"questionD\": \"D\"\n" +
+                "\t\t},\n" +
+                "\t\t\"output\": \"A\",\n" +
+                "\t\t\"point\": \"1.5\",\n" +
+                "\t\t\"answer\": \"A\",\n" +
+                "\t\t\"mypoint\": \"\"\n" +
+                "\t}, {\n" +
+                "\t\t\"qtype\": \"3\",\n" +
+                "\t\t\"qid\": \"1845455304\",\n" +
+                "\t\t\"describtion\": \"测试第二题\",\n" +
+                "\t\t\"input\": {\n" +
+                "\t\t\t\"questionA\": \"11 12 13\",\n" +
+                "\t\t\t\"questionB\": \"36 25 12\",\n" +
+                "\t\t\t\"questionC\": \"59 264 26\",\n" +
+                "\t\t\t\"questionD\": \"D\"\n" +
+                "\t\t},\n" +
+                "\t\t\"output\":  \"A\",\n" +
+                "\t\t\"point\": \"1.5\",\n" +
+                "\t\t\"answer\": \"B\",\n" +
+                "\t\t\"mypoint\": \"\"\n" +
+                "\t}]\n" +
+                "}";
         JSONObject jsonObject = new JSONObject(jsonRequest);
         String tid = jsonObject.getString("tid");
         String account = jsonObject.getString("account");
@@ -110,13 +143,15 @@ class DemoApplicationTests {
             String answer = question.getString("answer");
             if(outputExample.equals(answer)){
                 question.put("mypoint",question.getString("point"));
+                sumPoint = sumPoint.add(new BigDecimal(question.getString("point")));
             }
             else{
                 question.put("mypoint","0");
+                sumPoint = sumPoint.add(BigDecimal.valueOf(0));
             }
             log.debug(question.getString("point"));
-            sumPoint = sumPoint.add(new BigDecimal(question.getString("point")));
         }
-        courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sumPoint);
+        log.info(String.valueOf(sumPoint));
+        //courseService.insertToAnswerSet(tid,account, String.valueOf(questions),sumPoint);
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lenovo
@@ -60,15 +59,19 @@ public class UserController {
     }
 
     /**根据用户提交信息修改个人信息,注意：未测试
-     * @param map 用户信息
+     * @param jsonRequest 用户信息
      * @return 返回int若为1，则成功，否则失败
      * @date 6.22 11:30
      * */
     @RequestMapping("/UpdateUser")
     @ResponseBody
     @CrossOrigin(origins = {"*"})
-    public int updateUser(@RequestBody Map<String, Map<String, Object>> map){
-        return userService.updateUser(map);
+    public int updateUser( @RequestBody String jsonRequest) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonRequest);
+        String account = jsonObject.getString("account");
+        String password = jsonObject.getString("password");
+        password = MD5Utils.encryptByMd5(password);
+        return userService.updateUser(account, password);
     }
 
 

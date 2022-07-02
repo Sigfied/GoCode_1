@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.entity.Question;
-import com.example.demo.mapper.QuestionMapper;
-import com.example.demo.mapper.TopicSetMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.entity.*;
+import com.example.demo.mapper.*;
 import com.example.demo.tools.ExcelFileToJson;
 import com.example.demo.tools.MathUtils;
 import com.example.demo.tools.RunCode;
@@ -28,6 +28,15 @@ public class ExcelFileToJsonTests {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+
+    @Autowired
+    private StudentsMapper studentsMapper ;
+    @Autowired
+    private CourseMapper courseMapper;
+    @Autowired
+    private AnswerSetMapper answerSetMapper;
+
     @Test
     void ExcelFileToJsonTest() throws JSONException {
        JSONArray jsonArray =  ExcelFileToJson.tryExclTranslateToJson("F:\\questions.xls");
@@ -114,4 +123,51 @@ public class ExcelFileToJsonTests {
         }
        results.forEach(System.out::println);
     }
+
+
+
+    @Test
+    void showCreateCourseList(){
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account","20201307");
+        queryWrapper.eq("stype",1);
+        List<course> courses = new ArrayList<>();
+        for( Students students: studentsMapper.selectList(queryWrapper)){
+            QueryWrapper<course> queryWrapperc = new QueryWrapper<>();
+            queryWrapperc.eq("cid",students.getCid());
+            courses.addAll(courseMapper.selectList(queryWrapperc));
+        }
+    }
+
+
+    @Test
+     void statisticalResults() {
+        String tid = "1374029871";
+        int pass = 0;
+        int excellent = 0;
+        double number = 0;
+        BigDecimal full = BigDecimal.valueOf(0);
+        QueryWrapper<Answerset> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tid",tid);
+        QueryWrapper<TopicSet> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("tid",tid);
+        BigDecimal sumCount= topicSetMapper.selectOne(queryWrapper2).getTsumpoint();
+        for( Answerset answerset: answerSetMapper.selectList(queryWrapper)){
+            full = full.add(answerset.getApoint()) ;
+            number++;
+            if(answerset.getApoint().compareTo(sumCount.multiply(BigDecimal.valueOf(0.6 ))) > 0){
+                pass++;
+            }
+            if(answerset.getApoint().compareTo(sumCount.multiply(BigDecimal.valueOf(0.8))) > 0){
+                excellent++;
+            }
+        }
+        TopicSet topicSet = new TopicSet();
+        topicSet.setTaverage(full.divide(BigDecimal.valueOf(number)));
+        topicSet.setTpassingrate(BigDecimal.valueOf(pass/number));
+        topicSet.setTexcellentrate(BigDecimal.valueOf(excellent/number));
+        topicSetMapper.update(topicSet,queryWrapper2);
+    }
+
+
 }
